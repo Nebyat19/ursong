@@ -1,6 +1,6 @@
 import { ENV } from "../../config";
 
-export const api = {
+export const songapi = {
     fetchSongs: () => {
       
         return fetch(ENV.fetchSongsUrl+'/songs').then(response => response.json());
