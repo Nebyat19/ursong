@@ -1,6 +1,16 @@
 import { ENV } from "../../config";
 
 export const playlistApi = {
+
+    addPlaylist:(newPlayList)=>{
+        return fetch(`${ENV.apiBaseUrl}/playlists`, {
+            method: 'POST',
+            body: JSON.stringify(newPlayList),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json());
+    },
     fetchPlaylists: () => {
         return fetch(`${ENV.apiBaseUrl}/playlists`)
             .then(response => response.json());

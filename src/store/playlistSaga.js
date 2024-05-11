@@ -1,5 +1,5 @@
-import { put, takeLatest, all } from 'redux-saga/effects';
-import { getPlaylistsSuccess, getPlaylistsFailure } from './playListState'; 
+import { put, takeLatest, all, call } from 'redux-saga/effects';
+import { addPlaylistFailure,getPlaylistsSuccess,addNewPlaylist, getPlaylistsFailure } from './playListState'; 
 import { playlistApi } from './api/playlistapi';
 
 function* fetchPlaylists() {
@@ -31,15 +31,28 @@ function* updatePlaylist(action) {
     try {
       const playlistIdToDelete = action.payload;
     
-      yield call(playlistApi.deletePlaylist, playlistIdToDelete);
-  
+    yield call(playlistApi.deletePlaylist, playlistIdToDelete);
+
     } catch (error) {
+      console.log(error.message)
     }
   }
-  function* addPlaylist(action){
-
+  function* addPlaylist(action) {
+    try {
+      const newPlaylist = action.payload;
+      const response = yield call(playlistApi.addPlaylist, newPlaylist);
+      if (response.id) {
+     
+        yield put(addNewPlaylist(newPlaylist)); 
+        
+       
+      } else {
+        yield put(addPlaylistFailure("Error adding Playlist"));
+      }
+    } catch (error) {
+      yield put(addPlaylistFailure(error.message));
+    }
   }
- 
   function* watchUpdatePlaylist() {
     yield takeLatest('playlists/updatePlaylistRequest', updatePlaylist);
   }

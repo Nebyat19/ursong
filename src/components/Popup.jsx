@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import * as colors from "../constants/colors";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useUser } from '../store/hooks/useUser';
 
 const Container = styled.div`
   position: fixed;
@@ -125,7 +126,10 @@ const FlexDiv = styled.div`
   margin-top:20px;
 `;
 
+
 const Popup = ({ onClose }) => {
+  const user = useUser()
+
   const [isSongForm, setIsSongForm] = useState(true);
 
   const toggleForm = () => {
@@ -139,7 +143,9 @@ const Popup = ({ onClose }) => {
     description: "",
     isPublic: false,
     coverImage: '',
-    id: new Date().getTime()
+    id: new Date().getTime(),
+    userId:user.id
+
   });
   const [songformData, setsongFormData] = useState({
     title:'',
@@ -148,9 +154,12 @@ const Popup = ({ onClose }) => {
      isFav:false,
       playListId:0, 
       thumbnailImage:'',
-    id: new Date().getTime()
+    id: new Date().getTime(),
+    userId:user.id
   });
-
+  const PlaylistError =  useSelector(state=>state.playlists.error)
+  const songError = useSelector(state=>state.songs.error)
+  console.log(PlaylistError);
   const dispatch = useDispatch()
 
   const handleChange = (e) => {
@@ -171,10 +180,11 @@ const Popup = ({ onClose }) => {
   const handleSubmit = (e) => {
 
     e.preventDefault();
-    isSongForm ? console.log(songformData) : console.log(listformData)
-    isSongForm ? dispatch({ type: 'songs/add', payload: songformData }) : dispatch({ type: 'playlists/add', payload: listformData })
+ 
+    isSongForm ? dispatch({ type: 'songs/addSong', payload: songformData }) : dispatch({ type: 'playlists/addPlaylist', payload: listformData })
 
   };
+  const playlists=useSelector(state=>state.playlists.playlists)
   return (
     <Container>
       <Content>
@@ -188,7 +198,7 @@ const Popup = ({ onClose }) => {
           {isSongForm ? (
             <>
               <Label htmlFor="title">Title *</Label>
-              <Input onChange={handleChange} type="text" id="title" name="title" />
+              <Input onChange={handleChange} type="text" id="title" name="title" required />
               <Label htmlFor="filePath">File Path</Label>
               <Input onChange={handleChange} type="text" id="filePath" name="filePath" />
               <Label htmlFor="tags">Tags</Label>
@@ -198,8 +208,15 @@ const Popup = ({ onClose }) => {
                 <Checkbox  onChange={handleChange} type="checkbox" id="isFav" name="isFav" />
               </Label>
               <Label htmlFor="playListId">Playlist *</Label>
-              <StyledSelect onChange={handleChange} name="playListId" id="playListId">
-                <StyledOption value="1">Select playlist</StyledOption>
+              <StyledSelect onChange={handleChange} name="playListId" id="playListId" required>
+              
+                {playlists.map(list=>
+                {
+  if(list.playlistName)  return <StyledOption key={list.id} value={list.id}>{list.playlistName}</StyledOption>
+                })
+               
+                }
+                
               </StyledSelect>
               <Label htmlFor="thumbnailImage">Thumbnail Image</Label>
               <Input onChange={handleChange} type="text" id="thumbnailImage" name="thumbnailImage" />
@@ -207,11 +224,11 @@ const Popup = ({ onClose }) => {
           ) : (
             <>
               <Label htmlFor="playlistName">Playlist Name *</Label>
-              <Input onChange={handleChange} type="text" id="playlistName" name="playlistName" />
+              <Input onChange={handleChange} type="text" id="playlistName" name="playlistName" required />
               <Label htmlFor="tags">Tags</Label>
               <Input onChange={handleChange} type="text" id="tags" name="tags" />
               <Label htmlFor="description">Description</Label>
-              <Textarea id="description" name="description" rows="3" />
+              <Textarea  onChange={handleChange} id="description" name="description" rows="3" />
               <Label>
                 Public
                 <Checkbox  onChange={handleChange} type="checkbox" id="isPublic" name="isPublic" />
@@ -220,10 +237,14 @@ const Popup = ({ onClose }) => {
               <Input onChange={handleChange} type="text" id="coverImage" name="coverImage" />
             </>
           )}
+          
+            {songError&& <span>{songError}</span>}
+            {PlaylistError&& <span>{PlaylistError}</span>}
           <FlexDiv>
+          
             <Button primary>Save</Button>
             <Button onClick={onClose}>
-              Cancel
+              Close
             </Button>
           </FlexDiv>
         </Form>

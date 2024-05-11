@@ -130,7 +130,7 @@ const SongCardh = ({id,title,tags,isFav,playListId,thumbnailImage}) => {
   };
 
   return (
-    <SongCardContainer id={id}>
+    <SongCardContainer id={id+Math.random()}>
       <LeftSection>
         <AlbumCover>
           <AlbumCoverImage src={MusicIcon} alt="" />

@@ -11,14 +11,19 @@ export const songslice = createSlice({
     "name": "songs",
     initialState,
     reducers: {
-
+       
         //Get songs
+        addSongSongSuccess:(state,action)=>{
+            state.songs=[...state.songs, action.payload]
+            state.error = "New song is Added";
+            console.log(state.songs)
+        },
         getSongsFetch: (state) => {
             state.isLoading = true
         },
         getSongsSuccess: (state, action) => {
             state.songs = action.payload,
-                state.isLoading = false
+             state.isLoading = false
             state.error = null
         },
         getSongsFailure: (state, action) => {
@@ -46,7 +51,9 @@ export const songslice = createSlice({
             state.error = action.payload
         },
         
-
+        setSongErrorNull:(state)=>{
+            state.error = null;
+        },
 
     }
 
@@ -54,6 +61,6 @@ export const songslice = createSlice({
 
 });
 
-export const { getSongsFetch, getSongsSuccess, getSongsFailure, deleteSongFailure, deleteSongSuccess, updateSongSuccess, updateSongFailure } = songslice.actions
+export const {setSongErrorNull, addSongSongSuccess, getSongsFetch, getSongsSuccess, getSongsFailure, deleteSongFailure, deleteSongSuccess, updateSongSuccess, updateSongFailure } = songslice.actions
 
 export default songslice.reducer; 

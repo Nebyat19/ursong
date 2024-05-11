@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
 import { Popup } from './Popup';
+import { useDispatch } from 'react-redux';
+import { setplaylisterrorNull } from '../store/playListState';
 const StyledCreateButton = styled.div`
   position: fixed;
   bottom: 100px;
@@ -40,12 +42,14 @@ const CreateButton = () => {
       setIsOpen(true);
     };
   
+    const dispatch=useDispatch()
     const closePopup = () => {
       setIsOpen(false);
+      dispatch(setplaylisterrorNull())
     };
   return (
     <div>
-        {isOpen && <Popup onClose={closePopup} />}
+        {isOpen && <Popup onClose={closePopup} /> }
     
     <StyledCreateButton onClick={openPopup}>
       <Button>

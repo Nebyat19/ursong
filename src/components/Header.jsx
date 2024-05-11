@@ -71,7 +71,7 @@ const Header = () => {
 
     return (
 
-        <di>
+        <div>
             <HeaderContainer>
                 <ContentContainer>
                     <LogoWrapper>
@@ -97,7 +97,7 @@ const Header = () => {
             </HeaderContainer>
             <Outlet />
             <Footer />
-        </di>
+        </div>
 
 
     )

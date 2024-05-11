@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     playlists: [],
     isLoading: false,
-    error: null
+    error: null,
+  
 }
 
 
@@ -12,7 +13,16 @@ export const playlistslice = createSlice({
     initialState,
     reducers:
     {
-        
+
+
+        setplaylisterrorNull:(state)=>{
+            state.error = null;
+        },
+        addNewPlaylist:(state, action)=>{
+            state.playlists=[...state.playlists, action.payload]
+            state.error = "New PLAY list Added";
+            console.log(state.playlists)
+        },
         getPlaylistsFetch: (state) => {
             state.isLoading = true
         },
@@ -44,11 +54,13 @@ export const playlistslice = createSlice({
 
             state.error = action.payload
         },
-
+        addPlaylistFailure:(state,action)=>{
+            state.error = action.payload
+        }
 
     }
 });
 
-export const { getPlaylistsFetch, getPlaylistsSuccess, getPlaylistsFailure , deletePlaylistsSuccess, deletePlaylistsFailure, updatePlaylistsSuccess, updatePlaylistsFailure} = playlistslice.actions
+export const {setplaylisterrorNull, addNewPlaylist, addPlaylistFailure, getPlaylistsFetch, getPlaylistsSuccess, getPlaylistsFailure , deletePlaylistsSuccess, deletePlaylistsFailure, updatePlaylistsSuccess, updatePlaylistsFailure} = playlistslice.actions
 
 export default playlistslice.reducer; 

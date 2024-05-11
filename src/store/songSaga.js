@@ -1,13 +1,14 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects'
-import { getSongsFailure, getSongsSuccess, deleteSongSuccess } from './songState'
+import { addSongSongSuccess, getSongsFailure, getSongsSuccess, deleteSongSuccess } from './songState'
 import { songapi } from './api/songsapi';
 
 
-function* workGetSongsFetch() {
+function* workGetSongsFetch(action) {
     try {
 
-        const songs = yield call(songapi.fetchSongs);
-        yield put(getSongsSuccess(songs));
+        const songs = yield call(songapi.fetchSongs,action.payload);
+       const response = yield put(getSongsSuccess(songs));
+       console.log(songs)
     } catch (error) {
         yield put(getSongsFailure(error.message));
     }
@@ -35,13 +36,27 @@ function* workUpdateSong(action) {
     }
 }
 
+function* workAddSong(action){
 
+    try{
+        const newsong=action.payload
+        const response =yield call(songapi.addsong,newsong)
+        console.log(response)
+        yield put(addSongSongSuccess(response))
+
+    }catch (error){
+     yield put(getSongsFailure(error.message))
+       console.log(error.message)
+    }
+}
 
 function* songsaga() {
     yield all([
      takeEvery('songs/getSongsFetch', workGetSongsFetch),
+
      takeEvery('songs/deleteSong', workDeleteSong),
-     takeEvery('songs/updateSong', workUpdateSong)
+     takeEvery('songs/updateSong', workUpdateSong),
+     takeEvery('songs/addSong',workAddSong)
     ])
 
 }
