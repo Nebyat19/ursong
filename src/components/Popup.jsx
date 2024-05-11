@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import * as colors from "../constants/colors";
+import { useDispatch } from 'react-redux';
 
 const Container = styled.div`
   position: fixed;
@@ -38,7 +40,7 @@ font-style: normal;
 const Title = styled.h2`
   font-size: 1rem;
   font-weight: 600;
-  color: #6ec24a;
+  color: ${colors.secondaryColor};
   margin-bottom: 1rem;
 `;
 
@@ -83,7 +85,7 @@ const Button = styled.button`
   cursor: pointer;
   color:#fff;
   transition: background-color 0.3s ease;
-  background-color: ${({ primary }) => (primary ? '#c31b4b' : '#6c757d')};
+  background-color: ${({ primary }) => (primary ? colors.secondaryColor : '#6c757d')};
   &:hover {
     background-color: #505a6b;
    
@@ -130,6 +132,49 @@ const Popup = ({ onClose }) => {
     setIsSongForm(!isSongForm);
   };
 
+
+  const [listformData, setlistFormData] = useState({
+    playlistName: '',
+    tags: '',
+    description: "",
+    isPublic: false,
+    coverImage: '',
+    id: new Date().getTime()
+  });
+  const [songformData, setsongFormData] = useState({
+    title:'',
+    filePath:'', 
+    tags:'',
+     isFav:false,
+      playListId:0, 
+      thumbnailImage:'',
+    id: new Date().getTime()
+  });
+
+  const dispatch = useDispatch()
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (isSongForm) {
+      setsongFormData({
+        ...songformData,
+        [name]: value,
+      });
+    } else {
+      setlistFormData({
+        ...listformData,
+        [name]: value,
+      });
+    }
+
+  };
+  const handleSubmit = (e) => {
+
+    e.preventDefault();
+    isSongForm ? console.log(songformData) : console.log(listformData)
+    isSongForm ? dispatch({ type: 'songs/add', payload: songformData }) : dispatch({ type: 'playlists/add', payload: listformData })
+
+  };
   return (
     <Container>
       <Content>
@@ -139,43 +184,43 @@ const Popup = ({ onClose }) => {
             Add {isSongForm ? 'Playlist' : 'Song'}
           </Button>
         </HeaderContainer>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           {isSongForm ? (
             <>
               <Label htmlFor="title">Title *</Label>
-              <Input type="text" id="title" name="title" />
+              <Input onChange={handleChange} type="text" id="title" name="title" />
               <Label htmlFor="filePath">File Path</Label>
-              <Input type="text" id="filePath" name="filePath" />
+              <Input onChange={handleChange} type="text" id="filePath" name="filePath" />
               <Label htmlFor="tags">Tags</Label>
-              <Input type="text" id="tags" name="tags" />
+              <Input onChange={handleChange} type="text" id="tags" name="tags" />
               <Label>
                 Favorite
-                <Checkbox type="checkbox" id="isFav" name="isFav" />
+                <Checkbox  onChange={handleChange} type="checkbox" id="isFav" name="isFav" />
               </Label>
               <Label htmlFor="playListId">Playlist *</Label>
-              <StyledSelect name="playListId" id="playListId">
-              <StyledOption value="1">Select playlist</StyledOption>
+              <StyledSelect onChange={handleChange} name="playListId" id="playListId">
+                <StyledOption value="1">Select playlist</StyledOption>
               </StyledSelect>
               <Label htmlFor="thumbnailImage">Thumbnail Image</Label>
-              <Input type="text" id="thumbnailImage" name="thumbnailImage" />
+              <Input onChange={handleChange} type="text" id="thumbnailImage" name="thumbnailImage" />
             </>
           ) : (
             <>
               <Label htmlFor="playlistName">Playlist Name *</Label>
-              <Input type="text" id="playlistName" name="playlistName" />
+              <Input onChange={handleChange} type="text" id="playlistName" name="playlistName" />
               <Label htmlFor="tags">Tags</Label>
-              <Input type="text" id="tags" name="tags" />
+              <Input onChange={handleChange} type="text" id="tags" name="tags" />
               <Label htmlFor="description">Description</Label>
               <Textarea id="description" name="description" rows="3" />
               <Label>
                 Public
-                <Checkbox type="checkbox" id="isPublic" name="isPublic" />
+                <Checkbox  onChange={handleChange} type="checkbox" id="isPublic" name="isPublic" />
               </Label>
               <Label htmlFor="coverImage">Cover Image</Label>
-              <Input type="text" id="coverImage" name="coverImage" />
+              <Input onChange={handleChange} type="text" id="coverImage" name="coverImage" />
             </>
           )}
-           <FlexDiv>
+          <FlexDiv>
             <Button primary>Save</Button>
             <Button onClick={onClose}>
               Cancel

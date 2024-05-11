@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import* as colors from "../constants/colors";
 
 const Container = styled.div`
 font-family: "Lato", sans-serif;
@@ -38,26 +39,26 @@ const Input = styled.input`
   padding: 6px; 
   font-size: 0.875rem;
   color: #4b5563; 
-  border: 1px solid #c31b4b; /* primary color */
+  border: 1px solid ${colors.secondaryColor}; /* primary color */
   border-radius: 0.375rem; 
   transition: border-color 0.2s ease-in-out;
 
   &:hover {
-    border-color: #6ec24a; /* secondary color */
+    border-color: ${colors.secondaryColor}; /* secondary color */
   }
 `;
 
 const FindButton = styled.span`
   padding: 6px 8px; 
   font-size: 0.875rem;
-  background-color: #c31b4b; /* primary color */
+  background-color: ${colors.secondaryColor}; /* primary color */
   color: #fff;
   border-radius: 0.375rem; 
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
-    background-color: #6ec24a; /* secondary color */
+    background-color: ${colors.primaryColor}; /* secondary color */
   }
 `;
 
@@ -70,13 +71,13 @@ const FilterOptions = styled.div`
 const FilterOption = styled.span`
   padding: 6px 8px; 
   font-size: 0.875rem;
-  border: 1px solid #6ec24a; 
-  color: #6ec24a; 
+  border: 1px solid ${colors.secondaryColor}; 
+  color: ${colors.secondaryColor}; 
   border-radius: 0.375rem; 
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
-    background-color: #6ec24a; 
+    background-color: ${colors.secondaryColor}; 
     color: #fff;
   }
 `;

@@ -5,7 +5,10 @@ import songslice from './songState';
 import songsaga from './songSaga';
 
 import playlistsSaga from './playlistSaga'
-import  playlistslice  from './playListState';
+import playlistslice from './playListState';
+
+import userSaga from './userSaga'
+import userslice from './UserState'
 
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware];
@@ -13,12 +16,14 @@ const middleware = [sagaMiddleware];
 const store = configureStore({
     reducer: {
         songs: songslice,
-        playlists:playlistslice
+        user: userslice,
+        playlists: playlistslice
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(middleware),
 });
-
-sagaMiddleware.run(songsaga,playlistsSaga);
+sagaMiddleware.run(playlistsSaga);
+sagaMiddleware.run(songsaga)
+sagaMiddleware.run(userSaga);
 
 export { store };
 

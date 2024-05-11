@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styled from 'styled-components';
 import { UserIcon } from "../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../store/UserState";
 
 const ProfileContainer = styled.div`
 font-family: "Lato", sans-serif;
@@ -16,7 +18,7 @@ const ProfileImage = styled.img`
 `;
 
 const DropdownList = styled.ul`
-  display: ${({ isvisible }) => (isvisible ? 'block' : 'none')};
+  display:  'block';
   position: absolute;
   right: 0;
   top: 100%;
@@ -34,30 +36,36 @@ const ListItem = styled.li`
   cursor: pointer;
   &:hover {
     color: #fff;
-    background-color: #059669; 
+    background-color: #f27015; 
   }
 `;
 
 function UserProfile() {
     const [isHidden, setHidden] = useState(false);
     const isbold =useState(true);
-    
+    const isAuthenticated =useSelector(state=>state.user.isAuthenticated)
+    const dispatch=useDispatch();
+    const handleLogOut =()=>{
+      dispatch(logout())
+    }
     return (
         <ProfileContainer>
             <div onClick={() => setHidden((prev) => !prev)}>
                 <ProfileImage src={UserIcon} alt="" />
             </div>
-            <DropdownList isvisible={isHidden}>
+            {isAuthenticated&&isHidden&&
+            <DropdownList>
                 <ListItem isbold>
-                    <a href="">Account Settngs</a>
+                    <a>Account Settngs</a>
                 </ListItem>
                 <ListItem>
-                    <a href="">Support</a>
+                    <a >Support</a>
                 </ListItem>
                 <ListItem>
-                    <a href="">Sign Out</a>
+                    <a onClick={handleLogOut}>Sign Out</a>
                 </ListItem>
             </DropdownList>
+}
         </ProfileContainer>
     );
 }

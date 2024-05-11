@@ -3,6 +3,9 @@ import Header from './components/Header'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FeedView } from './pages/FeedsView';
 import { NoPage } from './pages/NoPage';
+import { Playlists } from './components/PlayLists';
+import { HomeView } from './pages/HomeView';
+
 
 
 function App() {
@@ -10,10 +13,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Header />}>
-          <Route index element={<PlayListView />} />
+         
           <Route path='feed' element={<FeedView />} />
-          <Route path='home' element={<FeedView />} />
+          <Route index path='/' element={<HomeView />} />
           <Route path="*" element={<NoPage />} />
+          <Route  path="mysong" element={<PlayListView />} />
         </Route>
       </Routes>
     </BrowserRouter>

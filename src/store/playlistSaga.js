@@ -36,7 +36,9 @@ function* updatePlaylist(action) {
     } catch (error) {
     }
   }
-  
+  function* addPlaylist(action){
+
+  }
  
   function* watchUpdatePlaylist() {
     yield takeLatest('playlists/updatePlaylistRequest', updatePlaylist);
@@ -46,11 +48,14 @@ function* updatePlaylist(action) {
   function* watchDeletePlaylist() {
     yield takeLatest('playlists/deletePlaylistRequest', deletePlaylist);
   }
-  
+  function*  watchAddPlaylist(){
+    yield takeLatest('playlists/addPlaylist', addPlaylist);
+  }
 export default function* playlistsSaga() {
   yield all([
     watchGetPlaylists(), 
     watchUpdatePlaylist(), 
     watchDeletePlaylist(), 
+    watchAddPlaylist()
   ]);
 }

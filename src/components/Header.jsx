@@ -4,6 +4,10 @@ import { UserProfile } from './UserProfile';
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { Footer } from './Footer';
 import { useState } from 'react';
+import { MusicIcon } from '../constants';
+import * as colors from "../constants/colors";
+import { useSelector } from 'react-redux';
+
 const HeaderContainer = styled.div`
   background-color: #e5e7eb; 
   font-family: "Lato", sans-serif;
@@ -14,7 +18,7 @@ const HeaderContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  width: 82%; /* Equivalent to Tailwind's w-[82%] */
+  width: 82%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -32,29 +36,35 @@ const Logo = styled.img`
 `;
 
 const LogoText = styled.span`
+  margin-left:10px;
   font-size: 1.125rem; 
   font-weight: bold; 
-  color: #6ec24a; 
+  color: #f27015; 
 `;
 
 const Nav = styled.nav``;
 const NavLink = styled(Link)`
-  color: ${({ isActive }) => (isActive ? 'red' : 'black')};
+ 
   font-size: 0.875rem; 
-  color: #c31b4b; 
-  color: ${({ isActive }) => (isActive ? '#c31b4b' : '#6ec24a')};
+   
+  color: ${({ isActive }) => (isActive ? colors.primaryColor : colors.secondaryColor)};
   transition: color 0.2s ease-in-out;
   &:hover {
-    color: #6ec24a;
+    color: ${colors.secondaryColor};
   }
+`;
+const NavUl = styled.ul`
+display:flex;
+gap:10px;
 `;
 
 
-
 const Header = () => {
+  const isAuthenticated =useSelector(state=>state.user.isAuthenticated)
+
     const location = useLocation();
     const [routes] = useState([
-        { path: '/', name: 'Mysong' },
+        { path: '/mysong', name: 'Mysong' },
         { path: '/feed', name: 'Feed' },
 
     ]);
@@ -65,11 +75,12 @@ const Header = () => {
             <HeaderContainer>
                 <ContentContainer>
                     <LogoWrapper>
-                        <Logo src={LogoImage} alt="" />
+                        <Logo src={MusicIcon} alt="" />
                         <LogoText>UrSong.</LogoText>
                     </LogoWrapper>
                     <Nav>
-                        <ul className="flex gap-5">
+                      {isAuthenticated&&
+                        <NavUl>
                             {routes.map((route, index) => (
                                 <li key={index}>
                                     <NavLink to={route.path} isActive={location.pathname === route.path}>
@@ -78,7 +89,8 @@ const Header = () => {
                                 </li>
                             ))}
 
-                        </ul>
+                        </NavUl>
+}
                     </Nav>
                     <UserProfile />
                 </ContentContainer>
