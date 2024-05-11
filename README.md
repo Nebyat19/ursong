@@ -4,8 +4,8 @@
 
 ## Screenshots
 
-![Screenshot 1](screenshots/1.png)
-![Screenshot 2](screenshot/2.png)
+![Screenshot 1](screenshoots/1.png)
+![Screenshot 2](screenshoots/1.png)
 
 ## Features
 
