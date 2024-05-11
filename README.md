@@ -5,7 +5,7 @@
 ## Screenshots
 
 ![Screenshot 1](screenshoots/1.png)
-![Screenshot 2](screenshoots/1.png)
+![Screenshot 2](screenshoots/2.png)
 
 ## Features
 
