@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { FaPlayCircle, FaMusic } from "react-icons/fa";
 import * as colors from "../constants/colors"
+import { BgImage } from "../constants";
 const StyledDiv = styled.div`
 display: flex;
 gap: 30px;
@@ -118,7 +119,7 @@ const PlaylistCard = ({ image, title, description, tags, musicCount }) => {
 
 const PlayListCardView = () => {
   const playlist = {
-    image: "src/assets/images/playlistBanner.jpeg",
+    image: {BgImage},
     title: "Chill Vibes",
     description: "Relaxing tunes for any time of day",
     tags: ["chill", "relaxing", "mellow"],
