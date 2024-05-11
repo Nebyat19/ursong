@@ -1,6 +1,6 @@
 export  const ENV= {
-    fetchSongsUrl:"http://localhost:3000",
-    apiBaseUrl:"http://localhost:3000"
+    fetchSongsUrl:"https://json-server-psi-eight.vercel.app/",
+    apiBaseUrl:"https://json-server-psi-eight.vercel.app/"
     
 }
 
